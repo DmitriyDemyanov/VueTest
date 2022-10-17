@@ -41,6 +41,21 @@
     </label>
     <h1>{{text}}</h1>
 
+    <ul>
+      <!-- <li v-for="(color, index) in colors" :key="index"> {{index + 1 }} {{ color }} </li> -->
+
+    <!-- <li v-for="user in users" :key="user.id">
+      {{user.id}}{{ user.name }}{{ user.age }}</li> -->
+
+    <li v-for="(value, name, index) in product" :key="value">
+       {{index + 1}}- {{ name }} --- {{ value }} </li>
+
+      <div> -->
+        <input type="text" @keyup.enter="deleteProp">
+        <!-- <input type="text" @keyup.enter="addNewColor"> -->
+      </div>
+
+      </ul>
   </div>
 </template>
 
@@ -56,6 +71,8 @@ export default {
   },
 
   data: () => ({
+    colors: ['orange', 'black', 'yellow'],
+    users: [{ name: 'Dima', age: 25, id: '1' }, { name: 'Ivan', age: 30, id: '2' }],
     text: '',
     firstName: 'Dima',
     num: 2,
@@ -67,9 +84,19 @@ export default {
     msgIsVisible: 2,
     isVisiibleBlock: false,
     inputNameVisible: false,
+    product: {
+      brand: 'apple',
+      model: 'iphone 11',
+      price: '$1000',
+    }
   }),
 
   methods: {
+    addNewColor(e) {
+      // this.colors.push(e.target.value);
+      // this.colors[this.colors.length] = e.target.value;
+      this.$set(this.colors, this.colors.length, e.target.value);
+    },
     onClick(value, e) {
       console.log(value, e);
     },
@@ -77,9 +104,13 @@ export default {
       console.log('link click');
     },
     onKeyUp(e) {
-      console.log(e);
       this.text = e.target.value;
     },
+    deleteProp(e) {
+      // delete this.product[e.target.value];
+      this.$delete(this.product, e.target.value);
+    },
+
   },
 
 };
