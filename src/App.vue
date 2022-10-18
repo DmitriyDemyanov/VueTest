@@ -74,7 +74,6 @@ export default {
     colors: ['orange', 'black', 'yellow'],
     users: [{ name: 'Dima', age: 25, id: '1' }, { name: 'Ivan', age: 30, id: '2' }],
     text: '',
-    firstName: 'Dima',
     num: 2,
     obj: {
       age: 30,
@@ -89,6 +88,8 @@ export default {
       model: 'iphone 11',
       price: '$1000',
     }
+    firstName: 'Dima',
+    lastName: 'Demyanov',
   }),
 
   methods: {
@@ -115,6 +116,8 @@ export default {
 
 };
 </script>
+
+
 
 <style lang="scss">
 #app {
