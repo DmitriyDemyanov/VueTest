@@ -1,8 +1,9 @@
 <template>
   <div id="app" class="my-class">
-    <h1>{{firstName}}</h1>
+    <h1 class="title"
+    :class="[classObj,activeClass]"
+    :style="{'font-size': fontSize + 'px'}">{{firstName}}</h1>
     <h2>{{num +2}}</h2>
-    <h3>{{num > 1 ? 'number: > 1' : 'number < 1'}}</h3>
     <h3>{{obj.age}}</h3>
     <a :href="linkUrl">Google</a>
     <p> <br> </p>
@@ -32,8 +33,8 @@
 
     <!-- <button @click="inputNameVisible = !inputNameVisible"></button> -->
 
-    <button @click.right="onClick('some value', $event)">Click event</button>
-    <a href="#" @click.prevent="onLinkClick">Link</a>
+    <!-- <button @click.right="onClick('some value', $event)">Click event</button>
+    <a href="#" @click.prevent="onLinkClick">Link</a> -->
 
     <label for="my-input">
       Nickname
@@ -51,31 +52,67 @@
        {{index + 1}}- {{ name }} --- {{ value }} </li>
 
       <div> -->
-        <input type="text" @keyup.enter="deleteProp">
+        <input  type="text" @keyup.enter="deleteProp">
         <!-- <input type="text" @keyup.enter="addNewColor"> -->
       </div>
 
       </ul>
+
+      <HelloWorld :user-object="obj" :title="title" @onChangeCounter="onChangeCounterIsComponent" />
+
+      <input type="text" v-model="textComputed">
+      <h3>
+        Input text value:
+        <i>{{  text }}</i>
+      </h3>
+      <div class="checkboxes">
+        <input type="checkbox" v-model="checkbox">
+        <h3>
+          checkbox value:
+        <i>{{  checkbox }}</i>
+      </h3>
+
+      <input type="checkbox" v-model="checkboxArray" value="one">
+      <input type="checkbox" v-model="checkboxArray" value="two">
+      <input type="checkbox" v-model="checkboxArray" value="three">
+      <h3>
+          checkbox value:
+        <i>{{  checkboxArray }}</i>
+      </h3>
+      </div>
+      <select v-model="select">
+        <option value="bmw">BMW</option>
+        <option value="audi">AUDI</option>
+        <option value="porshe">PORSHE</option>
+      </select>
+      <h3>
+          select value:
+        <i>{{  select }}</i>
+      </h3>
   </div>
 </template>
 
 <script>
-import UserName from './components/UserName.vue';
+
 import HelloWorld from './components/HelloWorld.vue';
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    UserName,
   },
 
   data: () => ({
     colors: ['orange', 'black', 'yellow'],
     users: [{ name: 'Dima', age: 25, id: '1' }, { name: 'Ivan', age: 30, id: '2' }],
     text: '',
+    checkbox: false,
+    checkboxArray: [],
+    select: '',
+    title: 'Some text',
     num: 2,
     obj: {
+      name: 'Dima',
       age: 30,
     },
     linkUrl: 'https://google.com',
@@ -87,12 +124,37 @@ export default {
       brand: 'apple',
       model: 'iphone 11',
       price: '$1000',
-    }
+    },
     firstName: 'Dima',
     lastName: 'Demyanov',
+    activeClass: 'my-active-class',
+    isActive: false,
+    fontSize: 30,
   }),
+  computed: {
+    classObj() {
+      return {
+        'active-class': this.isActive,
+        error: !this.isActive,
+
+      };
+    },
+    textComputed: {
+      get() {
+        return this.text;
+      },
+      set(value) {
+        console.log(value);
+        this.text = value;
+      },
+    },
+  },
 
   methods: {
+    onChangeCounterIsComponent(value) {
+      console.log('In Appvue, counter:', value);
+      this.isActive = value % 2 !== 0;
+    },
     addNewColor(e) {
       // this.colors.push(e.target.value);
       // this.colors[this.colors.length] = e.target.value;
@@ -117,8 +179,6 @@ export default {
 };
 </script>
 
-
-
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -127,5 +187,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.error {
+  color: red;
 }
 </style>
